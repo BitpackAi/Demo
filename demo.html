@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitpack AI - Advanced Features Demo</title>
+    <link rel="icon" type="image/x-icon" href="https://thebitpack.com/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://thebitpack.com/favicon.ico">
+    <link rel="apple-touch-icon" href="https://thebitpack.com/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: hsl(0, 0%, 8%);
+            color: hsl(0, 0%, 95%);
+            line-height: 1.6;
+            letter-spacing: -0.025em;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Cosmic Grid Background */
+        .cosmic-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            opacity: 0.2;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: hsl(0, 0%, 95%);
+            text-decoration: none;
+            background: linear-gradient(135deg, hsl(0, 0%, 95%) 0%, hsl(0, 0%, 70%) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Header */
+        .header {
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, hsl(0, 0%, 95%) 0%, hsl(0, 0%, 70%) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: hsl(0, 0%, 70%);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+        }
+
+        .business-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .business-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 200px;
+        }
+
+        .business-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .business-label {
+            font-size: 12px;
+            color: hsl(0, 0%, 60%);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .business-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: hsl(0, 0%, 95%);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 28px;
+            padding: 60px 0 80px;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(24px);
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card::after {
+            content: 'PREMIUM';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            border-radius: 24px;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-16px) scale(1.03);
+            box-shadow: 0 40px 80px rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-header {
+            padding: 28px 28px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            display: block;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            text-align: center;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(6deg);
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.4));
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: hsl(0, 0%, 98%);
+            line-height: 1.3;
+            text-align: center;
+            background: linear-gradient(135deg, hsl(0, 0%, 98%) 0%, hsl(0, 0%, 85%) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-description {
+            color: hsl(0, 0%, 75%);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0 28px 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: hsl(0, 0%, 85%);
+            font-size: 13px;
+            position: relative;
+            padding-left: 24px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: hsl(0, 0%, 90%);
+            font-weight: 600;
+            font-size: 12px;
+            top: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-list li:hover {
+            color: hsl(0, 0%, 95%);
+            padding-left: 28px;
+            transform: translateX(4px);
+        }
+
+        .feature-list li:hover::before {
+            color: hsl(0, 0%, 98%);
+            transform: scale(1.2);
+        }
+
+        /* Pricing Note Section */
+        .pricing-note {
+            margin: 60px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .pricing-note-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .pricing-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(0, 0%, 95%);
+            background: linear-gradient(135deg, hsl(0, 0%, 95%) 0%, hsl(0, 0%, 80%) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-description {
+            font-size: 1.1rem;
+            color: hsl(0, 0%, 75%);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .pricing-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: hsl(0, 0%, 85%);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .benefit-icon {
+            color: #4ade80;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .powered-by {
+            color: hsl(0, 0%, 60%);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .powered-by strong {
+            color: hsl(0, 0%, 85%);
+            font-weight: 600;
+        }
+
+        .bitpack-link {
+            color: hsl(0, 0%, 85%);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bitpack-link:hover {
+            color: hsl(0, 0%, 95%);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .bitpack-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, hsl(0, 0%, 85%) 0%, hsl(0, 0%, 95%) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .bitpack-link:hover::after {
+            width: 100%;
+        }
+
+        /* Handwritten Chatbot Notice */
+        .chatbot-notice {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(60, 60, 60, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 16px 20px;
+            max-width: 200px;
+            transform: rotate(-5deg);
+            animation: float-gentle 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .chatbot-notice-text {
+            color: hsl(0, 0%, 95%);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: center;
+            font-family: 'Kalam', cursive;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .chatbot-notice-text::after {
+            content: '↓';
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 16px;
+            font-weight: 400;
+            animation: bounce-down 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce-down {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-3px);
+            }
+            60% {
+                transform: translateY(-2px);
+            }
+        }
+
+        .chatbot-notice-arrow {
+            position: absolute;
+            bottom: -8px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(60, 60, 60, 0.6);
+        }
+
+        @keyframes float-gentle {
+            0%, 100% { 
+                transform: rotate(-5deg) translateY(0px); 
+            }
+            50% { 
+                transform: rotate(-5deg) translateY(-5px); 
+            }
+        }
+
+        /* Responsive adjustments for chatbot notice */
+        @media (max-width: 768px) {
+            .chatbot-notice {
+                bottom: 80px;
+                right: 15px;
+                max-width: 160px;
+                padding: 12px 16px;
+                transform: rotate(-3deg);
+            }
+            
+            .chatbot-notice-text {
+                font-size: 12px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 50px 0 70px;
+            }
+            
+            .feature-card {
+                margin: 0 10px;
+            }
+            
+            .feature-header {
+                padding: 24px 20px 16px;
+            }
+            
+            .feature-list {
+                padding: 0 20px 24px;
+            }
+            
+            .feature-icon {
+                font-size: 2.2rem;
+            }
+            
+            .feature-title {
+                font-size: 1.3rem;
+            }
+            
+            .business-info {
+                gap: 20px;
+            }
+            
+            .business-item {
+                min-width: 150px;
+                padding: 16px;
+            }
+        }
+
+        /* Enhanced Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in-right {
+            animation: slideInRight 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stagger animations */
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+    </style>
+</head>
+<body>
+    <!-- Cosmic Grid Background -->
+    <div class="cosmic-grid"></div>
+
+    <!-- Top Header -->
+    <header class="top-header">
+        <a href="#" class="logo">Bitpack</a>
+    </header>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header fade-in">
+            <h1 class="title">Advanced AI Solutions<br>for Every Business</h1>
+            <p class="subtitle">
+                AI-powered features to transform your business operations
+            </p>
+            
+            <!-- Business Information -->
+            <div class="business-info">
+                <div class="business-item scroll-reveal-left">
+                    <div class="business-label">Business Name</div>
+                    <div class="business-value">Your Company</div>
+                </div>
+                <div class="business-item scroll-reveal">
+                    <div class="business-label">Industry Niche</div>
+                    <div class="business-value">Customizable</div>
+                </div>
+                <div class="business-item scroll-reveal-right">
+                    <div class="business-label">Premium Features</div>
+                    <div class="business-value">6+ Add-ons</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Features Grid -->
+        <section class="features-grid">
+            <!-- Feature 1: Appointment Booking -->
+            <div class="feature-card scroll-reveal stagger-1">
+                <div class="feature-header">
+                    <span class="feature-icon">📅</span>
+                    <h3 class="feature-title">Appointment Booking System</h3>
+                    <p class="feature-description">
+                        Complete scheduling with calendar integration
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Calendar Integration</li>
+                    <li>Time Slot Management</li>
+                    <li>Booking Confirmation</li>
+                    <li>Rescheduling/Cancellation</li>
+                    <li>Reminder System</li>
+                </ul>
+            </div>
+
+            <!-- Feature 2: Speech-to-Text -->
+            <div class="feature-card scroll-reveal stagger-2">
+                <div class="feature-header">
+                    <span class="feature-icon">🎤</span>
+                    <h3 class="feature-title">Speech-to-Text Support</h3>
+                    <p class="feature-description">
+                        Voice-powered interactions with real-time transcription
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Voice Input</li>
+                    <li>Real-time Transcription</li>
+                    <li>Language Detection</li>
+                    <li>Voice Commands</li>
+                    <li>Accessibility</li>
+                </ul>
+            </div>
+
+            <!-- Feature 3: Multilingual Support -->
+            <div class="feature-card scroll-reveal stagger-3">
+                <div class="feature-header">
+                    <span class="feature-icon">🌍</span>
+                    <h3 class="feature-title">Enhanced Multilingual Support</h3>
+                    <p class="feature-description">
+                        Global communication with real-time translation
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Real-time Translation</li>
+                    <li>Language Auto-detection</li>
+                    <li>Cultural Context</li>
+                    <li>RTL Support</li>
+                    <li>Language Switching</li>
+                </ul>
+            </div>
+
+            <!-- Feature 4: File Upload & Processing -->
+            <div class="feature-card scroll-reveal stagger-4">
+                <div class="feature-header">
+                    <span class="feature-icon">📎</span>
+                    <h3 class="feature-title">File Upload & Processing</h3>
+                    <p class="feature-description">
+                        Document handling with OCR integration
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Document Upload</li>
+                    <li>OCR Integration</li>
+                    <li>Document Analysis</li>
+                    <li>File Type Support</li>
+                    <li>Secure Storage</li>
+                </ul>
+            </div>
+
+            <!-- Feature 5: Advanced AI Capabilities -->
+            <div class="feature-card scroll-reveal stagger-5">
+                <div class="feature-header">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">Advanced AI Capabilities</h3>
+                    <p class="feature-description">
+                        Intelligent conversation management
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Sentiment Analysis</li>
+                    <li>Intent Recognition</li>
+                    <li>Contextual Memory</li>
+                    <li>Smart Suggestions</li>
+                    <li>Personality Customization</li>
+                </ul>
+            </div>
+
+            <!-- Feature 6: Analytics & Insights -->
+            <div class="feature-card scroll-reveal stagger-6">
+                <div class="feature-header">
+                    <span class="feature-icon">📊</span>
+                    <h3 class="feature-title">Analytics & Insights Dashboard</h3>
+                    <p class="feature-description">
+                        Business intelligence with performance metrics
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li>Conversation Analytics</li>
+                    <li>Business Intelligence</li>
+                    <li>Performance Metrics</li>
+                    <li>A/B Testing</li>
+                    <li>Export Reports</li>
+                </ul>
+            </div>
+
+        </section>
+
+
+        <!-- Pricing Note Section -->
+        <section class="pricing-note scroll-reveal">
+            <div class="pricing-note-content">
+                <div class="pricing-icon">💡</div>
+                <h3 class="pricing-title">Flexible Add-On Pricing</h3>
+                <p class="pricing-description">
+                    Premium features available as add-ons. Choose what you need.
+                </p>
+                <div class="pricing-benefits">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Pay only for what you use</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Cancel or change anytime</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Volume discounts available</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="powered-by">Powered by <a href="https://thebitpack.com" target="_blank" rel="noopener noreferrer" class="bitpack-link"><strong>Bitpack</strong></a></p>
+        </footer>
+    </div>
+
+    <!-- Handwritten Chatbot Notice -->
+    <div class="chatbot-notice">
+        <div class="chatbot-notice-text">Your chatbot is here</div>
+        <div class="chatbot-notice-arrow"></div>
+    </div>
+
+    <script>
+        // Enhanced scroll reveal animation with smooth transitions
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scroll-reveal elements with staggered delays
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Simple hover effects
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+
+        // Simple page load effect
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+
+
+
+    </script>
+</body>
+</html>
+
